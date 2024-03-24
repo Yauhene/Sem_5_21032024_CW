@@ -10,12 +10,9 @@ import static Task_4.market.DataStorage.*;
 
 
 public class Market {
-
-
     final File productsF = new File("src/Task_4/products.txt");
     final File usersF = new File("src/Task_4/users.txt");
     final File ordersF = new File("src/Task_4/orders.txt");
-//    final File ordersFprobe = new File("src/Task_4/orders_probe.txt");
     enum ObjectType {PRODUCT, USER, ORDER}
 
 
@@ -37,16 +34,37 @@ public class Market {
 //                new Product("Cheese", 125)
 //        ));
         List<Order> orders = DataStorage.getOrders();
+
+        // чтение экземпляров классов User, Product и Order
         readData(usersF);
         readData(productsF);
         readData(ordersF);
+
+        // добавление заказов в дополнение к загруженным из файла
+        try {
+            createOrder((new User("Philly", 22, "666666", "male")).getId(), "notHoliday", 1,4);
+            createOrder((new User("Yoko", 22, "88888", "female")).getId(), "March_8", 2,14);
+
+        } catch (UserNotFoudException | ProductNotFoundException | QuantityIsNegativeException e) {
+            System.out.println(e.getMessage());
+        }
+
+        // запись экземпляров классов User, Product и Order в соответствующие файлы
         writeData(usersF, users, false);
         writeData(productsF, products, false);
         writeData(ordersF, orders, false);
 
     }
-void writeData(File file, List list, boolean append) throws IOException {
-    System.out.println("********************* Lets write!!! ******************************************************");
+
+    /**
+     * Метод записи содержимого списков юзеров, продуктов и заказов в
+     * соответствующие классы
+     * @param file - файл-приемник
+     * @param list - список объектов класса
+     * @param append - флаг дозаписи в существующий файл
+     * @throws IOException - исключение ввода-вывода
+     */
+    void writeData(File file, List list, boolean append) throws IOException {
         String typeName = file.getName();
     switch (file.getName()) {
         case "products.txt" :
@@ -62,9 +80,17 @@ void writeData(File file, List list, boolean append) throws IOException {
             System.out.println("Incorrect file name: " + file.getName());
             break;
     }
-    System.out.println("********************* Done. I'm hope... ******************************************************");
 }
-public void makeData(File file, List list, ObjectType type, boolean append) throws IOException {
+
+    /**
+     * Метод подготовки данных к записи в файл
+     * @param file - файл-приемник
+     * @param list - исходный список экземпляров класса
+     * @param type - тип сохраняемых объектов
+     * @param append - флаг дозаписи в файл
+     * @throws IOException
+     */
+    public void makeData(File file, List list, ObjectType type, boolean append) throws IOException {
         String collectString = "";
         
         switch (type) {
@@ -112,8 +138,13 @@ public void makeData(File file, List list, ObjectType type, boolean append) thro
         }
 
 }
+
+    /**
+     * Метод чтения экземпляров класса из файла-источника
+     * @param file - файл-источник
+     * @throws IOException - исключение ввода-вывода
+     */
     void readData(File file) throws IOException {
-        // вариант из семинара ====================================================
         switch (file.getName()) {
             case "products.txt" :
                 loadData(file, products, PRODUCT);
@@ -130,6 +161,13 @@ public void makeData(File file, List list, ObjectType type, boolean append) thro
         }
     }
 
+    /**
+     * Метод преобразования информации из файла-источника в список экземпляров класса
+     * @param file - файл-источник
+     * @param list - список экземпляров класса
+     * @param type - тип класса
+     * @throws IOException - исключение ввода-вывода
+     */
     public void loadData(File file, List list, ObjectType type) throws IOException {
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
         String str;
@@ -144,7 +182,6 @@ public void makeData(File file, List list, ObjectType type, boolean append) thro
                 case ORDER -> list.add(new Order(Integer.parseInt(prod[0]),Integer.parseInt(prod[1]), prod[2], Integer.parseInt(prod[3]), Integer.parseInt(prod[4])));
                 default -> System.out.println("Incorrect type.");
             }
-//            System.out.println(users);
         }
     } catch (FileNotFoundException e) {
         System.out.println("File not found: " + e);
@@ -214,7 +251,6 @@ public void makeData(File file, List list, ObjectType type, boolean append) thro
         } catch (ProductNotFoundException | QuantityIsNegativeException e) {
             System.out.println(e.getMessage());
         }
-//        return order;
     }
 
     public static List<User> getUsers() {

@@ -16,13 +16,13 @@ public class TaskTwo {
         int orderId2 = 0;
         List<Product> products = market.getProducts();
 
-        System.out.println("users------------------------------"); // вывод списка пользователей
+        System.out.println("Users list:  ------------------------------"); // вывод списка пользователей
         for (int i = 0; i < users.size(); i++) {
             System.out.println("User id: " + users.get(i).getId() + " ===> " + users.get(i));
         }
 
         System.out.println();
-        System.out.println("products------------------------------"); // вывод списка продуктов
+        System.out.println("Products list:  ------------------------------"); // вывод списка продуктов
         for (int j = 0; j < products.size(); j++) {
             System.out.println("Product id " + products.get(j).getId() + " ===> " + products.get(j).getId() + ", " + products.get(j).getTitle() + ", " + products.get(j).getPrice());
         }
@@ -39,17 +39,11 @@ public class TaskTwo {
         System.out.println("===========================================");
 
 
-        try {
-            market.createOrder((new User("Philly", 22, "666666", "male")).getId(), "notHoliday", 1,4);
-            market.createOrder((new User("Yoko", 22, "88888", "female")).getId(), "March_8", 2,14);
 
-        } catch (UserNotFoudException | ProductNotFoundException | QuantityIsNegativeException e) {
-            System.out.println(e.getMessage());
-        }
 
         // вывод заказов
         System.out.println();
-        System.out.println("orders-----------------------------------------------------------------------------------------");
+        System.out.println("Orders list:  -----------------------------------------------------------------------------------------");
         List<Order> ordersList = Market.getOrders();
         String strOut = "";
         for (int m = 0; m < ordersList.size(); m++) {
