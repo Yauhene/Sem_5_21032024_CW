@@ -47,17 +47,12 @@ public class Market {
     }
 
     void readData(File file) throws IOException {
-//        String typeStr = String.valueOf(products.get(0) instanceof Product);
-//        System.out.println( " products.get(0) instanceof Product " + String.valueOf(products.get(0) instanceof Product));
-//        typeStr = products.get(0).getClass().getName();
-//        System.out.println("products.get(0).getClass().getName() = " + typeStr);
         // вариант из семинара ====================================================
         switch (file.getName()) {
             case "products.txt" :
                 loadData(file, products, PRODUCT);
                 break;
             case "users.txt" :
-//                System.out.println("!!!!!!   Вошли в юзеров      !!!!!");
                 loadData(file, users, USER);
                 break;
             case "orders.txt" :
