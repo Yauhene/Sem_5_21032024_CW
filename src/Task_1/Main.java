@@ -9,6 +9,7 @@ import java.util.*;
 Создать пару-тройку текстовых файлов. Для упрощения (чтобы не разбираться с кодировками) внутри
 файлов следует писать текст только латинскими буквами.
  */
+
 public class Main {
     private  static  final Random rnd = new Random();
     private  static  final int CHAR_BOUND_L = 65;
@@ -46,6 +47,7 @@ public class Main {
                     writeFileContents(fileNames[i], WORDS_AMOUNT);
             }
             System.out.println("First task results are in file_0 and file_1.");
+            System.out.println();
         }
         catch (Exception ex) {throw new RuntimeException(ex);
         }
