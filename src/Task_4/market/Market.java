@@ -15,6 +15,7 @@ public class Market {
     final File productsF = new File("src/Task_4/products.txt");
     final File usersF = new File("src/Task_4/users.txt");
     final File ordersF = new File("src/Task_4/orders.txt");
+//    final File ordersFprobe = new File("src/Task_4/orders_probe.txt");
     enum ObjectType {PRODUCT, USER, ORDER}
 
 
@@ -39,13 +40,78 @@ public class Market {
         readData(usersF);
         readData(productsF);
         readData(ordersF);
-//        System.out.println(" ---------- after data reading ----------------------");
-//        for (int m = 0; m < Market.orders.size(); m++) {
-//            Order.printOrder(Market.orders.get(m));
-//        }
+        writeData(usersF, users, false);
+        writeData(productsF, products, false);
+        writeData(ordersF, orders, false);
 
     }
+void writeData(File file, List list, boolean append) throws IOException {
+    System.out.println("********************* Lets write!!! ******************************************************");
+        String typeName = file.getName();
+    switch (file.getName()) {
+        case "products.txt" :
+            makeData(file, products, PRODUCT, append);
+            break;
+        case "users.txt" :
+            makeData(file, users, USER, append);
+            break;
+        case "orders.txt" :
+            makeData(file, orders, ORDER, append);
+            break;
+        default :
+            System.out.println("Incorrect file name: " + file.getName());
+            break;
+    }
+    System.out.println("********************* Done. I'm hope... ******************************************************");
+}
+public void makeData(File file, List list, ObjectType type, boolean append) throws IOException {
+        String collectString = "";
+        
+        switch (type) {
+            case PRODUCT:
+                for (int i = 0; i < list.size(); i++) {
+                    collectString += ((Product) list.get(i)).getId() + "," +
+                            ((Product) list.get(i)).getTitle() + "," +
+                            ((Product) list.get(i)).getPrice() + "," + "\n";
+                }
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, append))) {
+                    writer.write(collectString);
+                    writer.flush();
+                }
+                break;
+            case USER:
+                for (int i = 0; i < list.size(); i++) {
+                    collectString += ((User) list.get(i)).getId() + "," +
+                            ((User) list.get(i)).getName() + "," +
+                            ((User) list.get(i)).getAge() + "," +
+                            ((User) list.get(i)).getPhone() + "," +
+                            ((User) list.get(i)).getSex() + "," + "\n";
+                }
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, append))) {
+                    writer.write(collectString);
+                    writer.flush();
+                }
+                break;
 
+            case ORDER:
+                for (int i = 0; i < list.size(); i++) {
+//                    int id, int userId, String day, int productId, int quantity
+                    collectString += ((Order) list.get(i)).getId() + "," +
+                            ((Order) list.get(i)).getUser().getId() + "," +
+                            ((Order) list.get(i)).getDay() + "," +
+                            ((Order) list.get(i)).getProductId() + "," +
+                            ((Order) list.get(i)).getQuantity() + "," + "\n";
+                }
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, append))) {
+                    writer.write(collectString);
+                    writer.flush();
+                }
+                break;
+
+            default : System.out.println("Incorrect collection name: " + type);
+        }
+
+}
     void readData(File file) throws IOException {
         // вариант из семинара ====================================================
         switch (file.getName()) {
@@ -71,15 +137,6 @@ public class Market {
         String[] prod = new String[3];
         while ((str = br.readLine()) != null) {
             prod = str.split(",");
-
-            // ============== control!!!!!
-//            for (int i = 0; i < prod.length; i++) {
-//                conrolStr += prod[i] + ",";
-//            }
-//            System.out.println(conrolStr);
-//            conrolStr = "";
-//            System.out.println();
-            // ============== end of control!!!!!
 
             switch (type) {
                 case PRODUCT -> list.add(new Product(Integer.parseInt(prod[0]), prod[1], Integer.parseInt(prod[2])));
